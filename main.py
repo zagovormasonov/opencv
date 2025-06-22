@@ -1,13 +1,19 @@
 # webcam_snapshot_bot.py
-# Скрипт запускает веб-сервер, принимает GET-запрос и автоматически делает снимок с веб-камеры
-# без отображения страницы, затем отправляет его в Telegram через Bot API.
+# Для корректного деплоя на Render.com:
+# 1. Создайте файл runtime.txt в корне со строкой:
+#       python-3.11.7
+# 2. Создайте файл requirements.txt с явными зависимостями:
+#       flask==2.3.2
+#       python-dotenv==1.0.0
+#       opencv-python==4.10.0.36
+#       requests==2.31.0
+#    Убедитесь, что aiohttp в requirements.txt отсутствует (если не используется).
 
 from flask import Flask, jsonify
 import os
 import cv2
 import tempfile
 import requests
-
 
 # Настройки Telegram
 TELEGRAM_TOKEN = '436156305:AAEcPVHmCWnTKOCopoXKrn6ky9Od-gzTE-o'
@@ -26,26 +32,21 @@ def send_photo(photo_path):
 # Маршрут для снимка
 @app.route(f'/snapshot', methods=['GET'])
 def snapshot():
-    # Захват с веб-камеры
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         return jsonify({'error': 'Cannot open webcam'}), 500
 
     ret, frame = cap.read()
     cap.release()
-
     if not ret:
         return jsonify({'error': 'Capture failed'}), 500
 
-    # Сохранение снимка во временный файл
     with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as tmp:
         cv2.imwrite(tmp.name, frame)
         tmp_path = tmp.name
 
-    # Отправка в Telegram
     result = send_photo(tmp_path)
     os.remove(tmp_path)
-
     return jsonify({'telegram_response': result})
 
 if __name__ == '__main__':
