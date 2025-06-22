@@ -59,9 +59,3 @@ def snapshot():
 if __name__ == '__main__':
     # По умолчанию доступно на http://0.0.0.0:5000/snapshot
     app.run(host='0.0.0.0', port=5000)
-
-# Использование:
-# 1. Установите зависимости: pip install flask opencv-python requests
-# 2. Экспортируйте переменные окружения TELEGRAM_TOKEN и TELEGRAM_CHAT_ID
-# 3. Запустите: python webcam_snapshot_bot.py
-# 4. Перейдите в браузере по http://<IP_вашего_сервера>:5000/snapshot — бот отправит вам фото.
