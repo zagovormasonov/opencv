@@ -1,14 +1,3 @@
-# webcam_snapshot_bot.py
-# Для корректного деплоя на Render.com:
-# 1. Создайте файл runtime.txt в корне со строкой:
-#       python-3.11.7
-# 2. Создайте файл requirements.txt с явными зависимостями:
-#       flask==2.3.2
-#       python-dotenv==1.0.0
-#       opencv-python==4.10.0.36
-#       requests==2.31.0
-#    Убедитесь, что aiohttp в requirements.txt отсутствует (если не используется).
-
 from flask import Flask, jsonify
 import os
 import cv2
